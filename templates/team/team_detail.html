@@ -28,10 +28,10 @@
             <img src="{{ driver.image.url }}" alt="{{ driver }} Image" class="driver-image">
             {% endif %}
             <p class="nationality"><strong>Nationality:</strong> {{ driver.country }} <img src="{{ driver.flag.url }}" alt="{{ driver.country }} Flag" class="country-flag"></p>
-            <p><strong>🏁Pole Positions:</strong> </p>
-            <p><strong>🥇Race Wins:</strong> </p>
-            <p><strong>🥈🥉Podiums:</strong> </p>
-            <p><strong>🏆World Drivers Championships:</strong> </p>
+            <p><strong>🏁Pole Positions:</strong> {{ driver.pole_positions }}</p>
+            <p><strong>🥇Race Wins:</strong> {{ driver.race_wins }}</p>
+            <p><strong>🥈🥉Podiums:</strong> {{ driver.podiums }}</p>
+            <p><strong>🏆World Drivers Championships:</strong> {{ driver.world_championships }}</p>
         </li>
         {% empty %}
         <li>No drivers found for this team.</li>
