@@ -17,7 +17,7 @@
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
     display: inline-block;
     width: 400px;
-    border: 1px solid #b0b2e3;
+    border: 1px solid #000000;
     border-radius: 8px;
     padding: 10px;
     color: var(--font-color);
@@ -30,6 +30,38 @@
     height: 250px;
     border-radius: 4px;
     margin-bottom: 10px;
+}
+
+.option {
+    text-align: center;
+    margin-top: 10px;
+}
+.option a {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.option a:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* New styles for clickable team cards */
+.team-list a {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.team-card {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {

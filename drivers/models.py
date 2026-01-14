@@ -19,6 +19,10 @@ class Driver(models.Model):
     country = models.CharField(max_length=100)
     flag = models.ImageField(upload_to='media/flags/', blank=True)
     image = models.ImageField(upload_to='media/driver_images/', blank=True)
+    pole_positions = models.IntegerField(default=0)
+    race_wins = models.IntegerField(default=0)
+    podiums = models.IntegerField(default=0)
+    world_championships = models.IntegerField(default=0)
 
 
     def __str__(self):

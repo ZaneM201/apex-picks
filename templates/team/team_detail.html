@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}{{ team.name }} - Apex Picks{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/team_detail.css' %}">
+{% endblock css %}
+
+{% block content %} 
+<div class="team-detail">
+    <h1>{{ team.name }}</h1>
+    {% if team.logo %}
+    <img src="{{ team.logo.url }}" alt="{{ team.name }} Logo" class="team-logo">
+    {% endif %}
+    <p><strong>Base:</strong> {{ team.base }}</p>
+    <p><strong>Team Principal:</strong> {{ team.principal }}</p>
+</div>
+<div class="drivers">
+    <h2>Drivers</h2>
+</div>
+<div class="driver-list">
+    <ul>
+        {% for driver in team.driver_set.all %}
+        <li class="driver-card">
+            <h3>#{{ driver.number }} {{ driver }}</h3>
+            {% if driver.image %}
+            <img src="{{ driver.image.url }}" alt="{{ driver }} Image" class="driver-image">
+            {% endif %}
+            <p class="nationality"><strong>Nationality:</strong> {{ driver.country }} <img src="{{ driver.flag.url }}" alt="{{ driver.country }} Flag" class="country-flag"></p>
+            <p><strong>🏁Pole Positions:</strong> </p>
+            <p><strong>🥇Race Wins:</strong> </p>
+            <p><strong>🥈🥉Podiums:</strong> </p>
+            <p><strong>🏆World Drivers Championships:</strong> </p>
+        </li>
+        {% empty %}
+        <li>No drivers found for this team.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

@@ -10,19 +10,21 @@
 {% block content %}
 <div class="teams">
     <h1>2026 Constructors</h1>
-
-    <div class="team-list">
-        {% for team in team_list %}
-        <div class="team-card">
-            <h2>{{ team.name }}</h2>
-            {% if team.logo %}
-            <img src="{{ team.logo.url }}" alt="{{ team.name }} Logo" class="team-logo">
-            {% endif %}
-            <p><strong>Base:</strong> {{ team.base }}</p>
-            <p><strong>Team Principal:</strong> {{ team.principal }}</p>
-            <p><strong>Drivers:</strong> {{ team.driver_set.all|join:", " }}</p>
+        <div class="team-list">
+            {% for team in team_list %}
+            <a href="{% url 'team-detail' team.id %}">
+                <div class="team-card">
+                    <h2>{{ team.name }}</h2>
+                    {% if team.logo %}
+                    <img src="{{ team.logo.url }}" alt="{{ team.name }} Logo" class="team-logo">
+                    {% endif %}
+                    <p><strong>Base:</strong> {{ team.base }}</p>
+                    <p><strong>Team Principal:</strong> {{ team.principal }}</p>
+                    <p><strong>Drivers:</strong> {{ team.driver_set.all|join:", " }}</p>
+                </div>
+            </a>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    </a>
 </div>
 {% endblock content %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from .models import Driver, Team
 from .forms import DriverForm
 from django.urls import reverse_lazy
@@ -14,3 +14,7 @@ class DriverCreateView(CreateView):
     template_name = "driver/driver_form.html"
     form_class = DriverForm
     success_url = reverse_lazy("team-list")
+
+class TeamDetailView(DetailView):
+    model = Team
+    template_name = "team/team_detail.html"

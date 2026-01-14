@@ -22,8 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    #path('teams/', include('teams.urls')),
-    path('drivers/', include('drivers.urls')),
+    path('', include('drivers.urls')),
     path('', include('pages.urls')),
 ]
 
