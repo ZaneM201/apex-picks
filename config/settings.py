@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'drivers',
     'picks',
     'schedule',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = '/users/login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/users/login'

@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('', include('drivers.urls')),
+    path('schedule/', include('schedule.urls')),
+    path('users/', include('users.urls')),
     path('', include('pages.urls')),
 ]
 

@@ -63,6 +63,23 @@ a {
     margin-right: 5px;
 }
 
+.btn-outline-primary {
+    color: var(--success-green);
+    border-color: var(--success-green);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--success-green);
+    color: var(--primary-color);
+    border-color: var(--success-green);
+}
+
+.user {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
 .footer {
     background-color: var(--primary-color);
     color: var(--font-color) !important;

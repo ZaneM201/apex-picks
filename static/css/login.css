@@ -1,0 +1,26 @@
+
+.login {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid var(--accent-red);
+    border-radius: 5px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    color: var(--font-color);
+}
+
+.login h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.btn-outline-primary {
+    color: var(--success-green);
+    border-color: var(--success-green);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--success-green);
+    color: var(--primary-color);
+    border-color: var(--success-green);
+}
