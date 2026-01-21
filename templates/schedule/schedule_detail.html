@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}{{ schedule.name }} - Schedule Detail{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/schedule_detail.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="schedule-detail">
+    <h1>{{ schedule.name }}</h1>
+    <img src="{{ schedule.track_image.url }}" alt="{{ schedule.name }} Image" class="schedule-image">
+    <p><strong>Date:</strong> {{ schedule.date }}</p>
+    <p><strong>Location:</strong> {{ schedule.location }}</p>
+    {% if schedule.sprint_race == True %}
+    <p><strong>Sprint Race:</strong> Yes</p>
+    {% else %}  
+    <p><strong>Sprint Race:</strong> No</p>
+    {% endif %}
+    <p><strong>Additional Info:</strong> {{ schedule.description|linebreaks }}</p>
+</div>
+{% endblock content %}

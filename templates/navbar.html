@@ -17,7 +17,7 @@
           <a class="nav-link {% if request.resolver_match.url_name == 'team-list' %}active{% endif %}" href="{% url 'team-list' %}">Constructors</a>
         </li>
         <li>
-          <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+          <a class="nav-link {% if request.resolver_match.url_name == 'schedule-list' %}active{% endif %}" href="{% url 'schedule-list' %}">Schedule</a>
         </li>
       </ul>
       <div class="d-flex ms-auto">
@@ -26,6 +26,7 @@
         <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a>
         {% else %}
         <a class="btn btn-outline-primary" href="{% url 'login' %}">Login</a>
+        <a class="btn btn-outline-primary" href="{% url 'register' %}">Register</a>
         {% endif %}
       </div>
     </div>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}Schedule 2026{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/schedule_list.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="schedule">
+    <h1>Schedule 2026</h1>
+    <div class="schedule-list">
+        {% for schedule in schedules %}
+        <a href="{% url 'schedule-detail' schedule.id %}">
+            <div class="schedule-card">
+                <h2>{{ schedule.name }}</h2>
+                <img src="{{ schedule.track_image.url }}" alt="{{ schedule.name }} Image" class="schedule-image">
+                <p><strong>Date:</strong> {{ schedule.date }}</p>
+                <p><strong>Location:</strong> {{ schedule.location }}</p>
+                {% if schedule.sprint_race == True %}
+                <p><strong>Sprint Race:</strong> Yes</p>
+                {% else %}
+                <p><strong>Sprint Race:</strong> No</p>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

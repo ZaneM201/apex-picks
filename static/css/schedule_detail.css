@@ -1,0 +1,95 @@
+
+.schedule-detail {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.schedule-detail h1 {
+    color: var(--accent-red);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+.schedule-image {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 2px solid var(--accent-red);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.schedule-detail p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    color: var(--font-color);
+}
+
+.schedule-detail p strong {
+    color: var(--accent-red);
+    display: inline-block;
+    min-width: 150px;
+}
+
+/* Sprint race badge styling */
+.schedule-detail p:has(strong:contains("Sprint Race")) {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--surface-color);
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Additional info section */
+.description-section {
+    background-color: var(--surface-color);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-red);
+    margin-top: 20px;
+}
+
+.description-section strong {
+    color: var(--accent-red);
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.description-content {
+    line-height: 1.6;
+    color: var(--font-color);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .schedule-detail {
+        margin: 20px;
+        padding: 25px;
+    }
+    
+    .schedule-detail h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+    
+    .schedule-image {
+        max-height: 300px;
+    }
+    
+    .schedule-detail p {
+        font-size: 1rem;
+    }
+    
+    .schedule-detail p strong {
+        min-width: 120px;
+    }
+}

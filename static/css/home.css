@@ -34,6 +34,13 @@
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     max-width: 100%;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.track-info:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(225, 6, 0, 0.6);
 }
 
 .countdown {

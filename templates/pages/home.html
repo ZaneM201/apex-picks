@@ -5,7 +5,7 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock %}
+{% endblock css %}
 
 {% block content %}
 <section class="home">
@@ -16,36 +16,48 @@
 </section>
 <section class="section section-home">
     <div class="container">
+        {% if next_race %}
         <div class="race-card">
             <div class="race-info">
-                <h3>🏎️ Next Race: Australian Grand Prix</h3>
-                <p>📍 Melbourne Grand Prix Circuit</p>
+                <h3>🏎️ Next Race: {{ next_race.name }}</h3>
+                <p>📍 {{ next_race.location }}</p>
+                <p>📅 {{ next_race.date|date:"F j, Y g:i A" }}</p>
             </div>
             <div>
-                <img class="track-info" src="{% static 'imgs/Albert_Park_Circuit.png' %}" alt="">
+                <a href="{% url 'schedule-detail' next_race.id %}">
+                    <img class="track-info" src="{{ next_race.track_image.url }}" alt="{{ next_race.name }}">
+                </a>
             </div>
             <div class="picks-info">
                 <p>Picks close in:</p>
             </div>
-            <div class="countdown">
+            <div class="countdown" data-race-date="{{ next_race.date|date:'c' }}">
                 <div class="countdown-item">
-                    <div class="countdown-number">76</div>
+                    <div class="countdown-number">0</div>
                     <div class="countdown-label">Days</div>
                 </div>
                 <div class="countdown-item">
-                    <div class="countdown-number">09</div>
+                    <div class="countdown-number">0</div>
                     <div class="countdown-label">Hours</div>
                 </div>
                 <div class="countdown-item">
-                    <div class="countdown-number">15</div>
+                    <div class="countdown-number">0</div>
                     <div class="countdown-label">Minutes</div>
                 </div>
                 <div class="countdown-item">
-                    <div class="countdown-number">59</div>
+                    <div class="countdown-number">0</div>
                     <div class="countdown-label">Seconds</div>
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="race-card">
+            <div class="race-info">
+                <h3>No Upcoming Races</h3>
+                <p>Check back soon for the next race schedule!</p>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
