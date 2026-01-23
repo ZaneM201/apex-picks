@@ -7,11 +7,10 @@ from .forms import ContactForm
 def home_view(request):
     # Get the next upcoming race (using now for DateTimeField comparison)
     now = datetime.now()
-    next_race = Schedule.objects.filter(date__gte=now).order_by('date').first()  # AND THIS LINE
+    next_race = Schedule.objects.filter(date__gte=now).order_by('date').first()
     
-    # Debug: Show all races if no upcoming race found
+    # Show all races if no upcoming race found
     if not next_race:
-        # Fallback to show the first race regardless of date (for testing)
         next_race = Schedule.objects.order_by('date').first()
     
     context = {
@@ -25,8 +24,7 @@ def about_view(request):
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
-        if form.is_valid():
-            # Process form data 
+        if form.is_valid(): 
             pass
             return redirect('success')
     else:
