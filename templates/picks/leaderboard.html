@@ -13,7 +13,7 @@
         <h1>🏆 Season Leaderboard</h1>
         <p>Championship Standings - 2026 F1 Pick'em</p>
         {% if total_races > 0 %}
-        <p class="text-muted">After {{ total_races }} races{{ total_races|pluralize }}</p>
+        <p class="text-muted">After {{ total_races }} race{{ total_races|pluralize }}</p>
         {% endif %}
     </div>
 
@@ -28,7 +28,7 @@
                     <strong>Races:</strong> {{ user_stats.races_participated }}
                 </p>
             </div>
-            <div class="col-md4 text-end">
+            <div class="col-md-4 text-end">
                 <a href="{% url 'my-picks' %}" class="btn btn-primary">View My Picks</a>
             </div>
         </div>
@@ -36,7 +36,7 @@
     {% endif %}
 
     <div class="leaderboard-table">
-        {% if standings %}
+        {% if leaderboard %}
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -51,7 +51,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for stat in standings %}
+                    {% for stat in leaderboard %}
                     <tr class="{% if user.is_authenticated and stat.user == user %}current-user-row{% endif %}">
                         <td class="rank-cell">
                             {% if forloop.counter == 1 %}

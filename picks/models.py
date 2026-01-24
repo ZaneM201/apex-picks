@@ -14,9 +14,9 @@ class RacePick(models.Model):  # Changed from RacePicks to RacePick (singular)
     first_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='first_place_picks')
     second_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='second_place_picks')
     third_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='third_place_picks')
-    pole_position = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='pole_picks')  # Changed from pole_position_picks
+    pole_position = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='pole_picks')
     fastest_lap = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='fastest_lap_picks')
-    driver_of_day = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='dotd_picks')  # Changed from driver_of_the_day
+    driver_of_day = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='dotd_picks',)  # Changed from driver_of_the_day
 
     # Sprint predictions (if applicable)
     sprint_first = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='sprint_first_picks', null=True, blank=True)

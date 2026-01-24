@@ -4,30 +4,60 @@ from django.contrib import messages
 from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import RacePick, RaceResult, UserSeasonStats
+from .models import RacePick, RaceResult, UserSeasonStats, Schedule
 from .forms import RacePickForm, SprintPickForm
 
 # Create your views here.
 @login_required
 def submit_picks(request, race_id):
-    race= get_object_or_404(Schedule, id=race_id)
+    race = get_object_or_404(Schedule, id=race_id)
 
     if timezone.now() >= race.date:
         messages.error(request, "Picks are locked for this weekend. Qualifying has already started.")
         return redirect('schedule-detail', pk=race_id)
 
-    # Get or create picks for this race\
-    race_pick, created = RacePick.objects.get_or_create(user=request.user, race=race)
-
-    # Check if picks are locked
-    if race_pick.picks_locked:
-        messages.error(request, "Your picks for this race are locked and cannot be edited.")
-        return redirect('my-picks')
+    # Try to get existing picks for this race
+    try:
+        race_pick = RacePick.objects.get(user=request.user, race=race)
+        created = False
+        # Check if picks are locked
+        if race_pick.picks_locked:
+            messages.error(request, "Your picks for this race are locked and cannot be edited.")
+            return redirect('my-picks')
+    except RacePick.DoesNotExist:
+        race_pick = None
+        created = True
 
     if request.method == 'POST':
+        # Create instance for the form - will be saved after validation
+        if race_pick is None:
+            race_pick = RacePick(user=request.user, race=race)
+        
         race_form = RacePickForm(request.POST, instance=race_pick)
         
         # Sprint Race form
+        if race.sprint_race:
+            sprint_form = SprintPickForm(request.POST, instance=race_pick)
+        else:
+            sprint_form = None
+        
+        # Validate and save
+        if race_form.is_valid():
+            # Check sprint form validity if it exists
+            if sprint_form is None or sprint_form.is_valid():
+                race_form.save()
+                if sprint_form:
+                    sprint_form.save()
+                
+                if created:
+                    messages.success(request, f"Your picks for {race.name} have been submitted!")
+                else:
+                    messages.success(request, f"Your picks for {race.name} have been updated!")
+                
+                return redirect('my-picks')
+    else:
+        # GET request - show empty or pre-filled form
+        race_form = RacePickForm(instance=race_pick)
         if race.sprint_race:
             sprint_form = SprintPickForm(instance=race_pick)
         else:
