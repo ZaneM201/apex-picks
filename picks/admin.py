@@ -11,23 +11,34 @@ class RacePickAdmin(admin.ModelAdmin):
     ordering = ['-race__date', '-points_earned']
     readonly_fields = ['submitted_at', 'updated_at']
     
-    fieldsets = (
-        ('Pick Information', {
-            'fields': ('user', 'race', 'points_earned', 'picks_locked')
-        }),
-        ('Race Predictions', {
-            'fields': ('first_place', 'second_place', 'third_place', 
-                      'pole_position', 'fastest_lap', 'driver_of_day')
-        }),
-        ('Sprint Predictions', {
-            'fields': ('sprint_first', 'sprint_second', 'sprint_third'),
-            'classes': ('collapse',)
-        }),
-        ('Timestamps', {
-            'fields': ('submitted_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
+    def get_fieldsets(self, request, obj=None):
+        """Show/hide sprint picks based on race type"""
+        fieldsets =[
+            ('Picks Information', {
+                'fields': ('user', 'race', 'points_earned', 'picks_locked')
+            }),
+            ('Race Predictions', {
+                'fields': ('first_place', 'second_place', 'third_place',
+                           'pole_position', 'fastest_lap', 'driver_of_day')
+            })
+        ]
+
+        # Show sprint section if it's a sprint weekend
+        if obj and obj.race and obj.race.sprint_race:
+            fieldsets.append(
+                ('Sprint Predictions', {
+                    'fields': ('sprint_first', 'sprint_second', 'sprint_third'),
+                })
+            )
+
+        fieldsets.append(
+            ('Timestamps', {
+                'fields': ('submitted_at', 'updated_at'),
+                'classes': ('collapse',)
+            })
+        )
+
+        return fieldsets
     
     actions = ['lock_picks', 'unlock_picks']
     

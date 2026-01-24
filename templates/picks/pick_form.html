@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ race.name }} - Make Your Picks{% endblock %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/picks.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="picks-header text-center mb-4">
+        <h1>🏎️ Make Your Picks</h1>
+        <h2>{{ race.name }}</h2>
+        <p class="race-details">
+            📍 {{ race.location }} | 📅 {{ race.date|date:"F j, Y g:i A" }}
+            {% if is_sprint %}
+            <span class="badge bg-danger ms-2">Sprint Weekend</span>
+            {% endif %}
+        </p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="picks-form-container">
+        <form method="post" id="picksForm">
+            {% csrf_token %}
+            
+            <div class="picks-section">
+                <h3 class="section-title">🏁 Race Predictions</h3>
+                
+                <div class="form-group mb-4">
+                    {{ race_form.first_place.label_tag }}
+                    {{ race_form.first_place }}
+                    {% if race_form.first_place.errors %}
+                        <div class="text-danger">{{ race_form.first_place.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    {{ race_form.second_place.label_tag }}
+                    {{ race_form.second_place }}
+                    {% if race_form.second_place.errors %}
+                        <div class="text-danger">{{ race_form.second_place.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    {{ race_form.third_place.label_tag }}
+                    {{ race_form.third_place }}
+                    {% if race_form.third_place.errors %}
+                        <div class="text-danger">{{ race_form.third_place.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {% if race_form.non_field_errors %}
+                    <div class="alert alert-danger">{{ race_form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        {{ race_form.pole_position.label_tag }}
+                        {{ race_form.pole_position }}
+                        {% if race_form.pole_position.errors %}
+                            <div class="text-danger">{{ race_form.pole_position.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        {{ race_form.fastest_lap.label_tag }}
+                        {{ race_form.fastest_lap }}
+                        {% if race_form.fastest_lap.errors %}
+                            <div class="text-danger">{{ race_form.fastest_lap.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    {{ race_form.driver_of_day.label_tag }}
+                    {{ race_form.driver_of_day }}
+                    {% if race_form.driver_of_day.errors %}
+                        <div class="text-danger">{{ race_form.driver_of_day.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if is_sprint and sprint_form %}
+            <div class="picks-section mt-5">
+                <h3 class="section-title">🏃 Sprint Race Predictions</h3>
+                
+                <div class="form-group mb-4">
+                    {{ sprint_form.sprint_first.label_tag }}
+                    {{ sprint_form.sprint_first }}
+                    {% if sprint_form.sprint_first.errors %}
+                        <div class="text-danger">{{ sprint_form.sprint_first.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    {{ sprint_form.sprint_second.label_tag }}
+                    {{ sprint_form.sprint_second }}
+                    {% if sprint_form.sprint_second.errors %}
+                        <div class="text-danger">{{ sprint_form.sprint_second.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    {{ sprint_form.sprint_third.label_tag }}
+                    {{ sprint_form.sprint_third }}
+                    {% if sprint_form.sprint_third.errors %}
+                        <div class="text-danger">{{ sprint_form.sprint_third.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {% if sprint_form.non_field_errors %}
+                    <div class="alert alert-danger">{{ sprint_form.non_field_errors }}</div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="form-actions mt-5 text-center">
+                <button type="submit" class="btn btn-success btn-lg me-3">
+                    {% if is_edit %}
+                        💾 Update Picks
+                    {% else %}
+                        ✅ Submit Picks
+                    {% endif %}
+                </button>
+                <a href="{% url 'schedule-detail' race.id %}" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+        </form>
+
+        <div class="points-info mt-5">
+            <h4>📊 Points System</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="points-list">
+                        <li>🥇 1st Place: <strong>25 pts</strong></li>
+                        <li>🥈 2nd Place: <strong>18 pts</strong></li>
+                        <li>🥉 3rd Place: <strong>15 pts</strong></li>
+                        <li>⚡ Pole Position: <strong>10 pts</strong></li>
+                        <li>⏱️ Fastest Lap: <strong>5 pts</strong></li>
+                        <li>⭐ Driver of the Day: <strong>20 pts</strong></li>
+                    </ul>
+                </div>
+                {% if is_sprint %}
+                <div class="col-md-6">
+                    <h5>Sprint Points</h5>
+                    <ul class="points-list">
+                        <li>🥇 Sprint 1st: <strong>8 pts</strong></li>
+                        <li>🥈 Sprint 2nd: <strong>7 pts</strong></li>
+                        <li>🥉 Sprint 3rd: <strong>6 pts</strong></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            <p class="text-danger mt-3">
+                <strong>⚠️ DNF Penalty:</strong> If your podium pick DNFs, you lose the points for that position!
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

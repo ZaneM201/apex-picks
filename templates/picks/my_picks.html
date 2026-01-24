@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}My Picks - Apex Picks{% endblock %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/picks.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="my-picks-header text-center mb-4">
+        <h1>My Picks</h1>
+        <p>Track your predictions and performance throughout the season</p>
+    </div>
+
+    <!-- User Stats Card -->
+    <div class="stats-card mb-5">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h3>{{ stats.total_points }}</h3>
+                    <p>Total Points</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h3>{{ stats.races_participated }}</h3>
+                    <p>Races</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h3>{{ stats.correct_wins }}</h3>
+                    <p>Correct Wins</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h3>{{ stats.correct_poles }}</h3>
+                    <p>Correct Poles</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Races Without Picks -->
+    {% if upcoming_races %}
+    <div class="upcoming-section mb-5">
+        <h2 class="section-title">⏰ Upcoming Races - Make Your Picks!</h2>
+        <div class="row">
+            {% for race in upcoming_races %}
+            <div class="col-md-6 mb-4">
+                <div class="race-pick-card">
+                    <div class="race-pick-header">
+                        <h4>{{ race.name }}</h4>
+                        <span class="badge bg-warning">No Picks Yet</span>
+                    </div>
+                    <p>📍 {{ race.location }}</p>
+                    <p>📅 {{ race.date|date:"F j, Y g:i A" }}</p>
+                    {% if race.sprint_race %}
+                    <span class="badge bg-danger mb-2">Sprint Weekend</span>
+                    {% endif %}
+                    <a href="{% url 'submit-picks' race.id %}" class="btn btn-primary btn-sm mt-2">
+                        Make Picks 🏎️
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- User's Submitted Picks -->
+    <div class="picks-history">
+        <h2 class="section-title">📊 My Pick History</h2>
+        
+        {% if picks %}
+        <div class="picks-list">
+            {% for pick in picks %}
+            <div class="pick-card mb-4">
+                <div class="pick-card-header">
+                    <div>
+                        <h3>{{ pick.race.name }}</h3>
+                        <p class="mb-0">{{ pick.race.date|date:"F j, Y" }}</p>
+                    </div>
+                    <div class="pick-points">
+                        <span class="points-badge">{{ pick.points_earned }} pts</span>
+                        {% if pick.picks_locked %}
+                        <span class="badge bg-secondary ms-2">🔒 Locked</span>
+                        {% else %}
+                        <span class="badge bg-success ms-2">✏️ Editable</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="pick-details">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Race Predictions</h5>
+                            <ul class="predictions-list">
+                                <li>🥇 1st: #{{ pick.first_place.number }} {{ pick.first_place.first_name }} {{ pick.first_place.last_name }}</li>
+                                <li>🥈 2nd: #{{ pick.second_place.number }} {{ pick.second_place.first_name }} {{ pick.second_place.last_name }}</li>
+                                <li>🥉 3rd: #{{ pick.third_place.number }} {{ pick.third_place.first_name }} {{ pick.third_place.last_name }}</li>
+                                <li>⚡ Pole: #{{ pick.pole_position.number }} {{ pick.pole_position.first_name }} {{ pick.pole_position.last_name }}</li>
+                                <li>⏱️ Fastest Lap: #{{ pick.fastest_lap.number }} {{ pick.fastest_lap.first_name }} {{ pick.fastest_lap.last_name }}</li>
+                                <li>⭐ DOTD: #{{ pick.driver_of_day.number }} {{ pick.driver_of_day.first_name }} {{ pick.driver_of_day.last_name }}</li>
+                            </ul>
+                        </div>
+                        
+                        {% if pick.race.sprint_race and pick.sprint_first %}
+                        <div class="col-md-6">
+                            <h5>Sprint Predictions</h5>
+                            <ul class="predictions-list">
+                                <li>🥇 1st: #{{ pick.sprint_first.number }} {{ pick.sprint_first.first_name }} {{ pick.sprint_first.last_name }}</li>
+                                <li>🥈 2nd: #{{ pick.sprint_second.number }} {{ pick.sprint_second.first_name }} {{ pick.sprint_second.last_name }}</li>
+                                <li>🥉 3rd: #{{ pick.sprint_third.number }} {{ pick.sprint_third.first_name }} {{ pick.sprint_third.last_name }}</li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="pick-actions mt-3">
+                        <small class="text-muted">Submitted: {{ pick.submitted_at|date:"M j, Y g:i A" }}</small>
+                        
+                        {% if not pick.picks_locked and pick.can_edit %}
+                        <div class="mt-2">
+                            <a href="{% url 'submit-picks' pick.race.id %}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                            <a href="{% url 'delete-pick' pick.id %}" class="btn btn-sm btn-danger" 
+                               onclick="return confirm('Are you sure you want to delete your picks for {{ pick.race.name }}?')">
+                                🗑️ Delete
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if pick.race.result.results_finalized %}
+                        <a href="{% url 'race-results' pick.race.id %}" class="btn btn-sm btn-info mt-2">
+                            📊 View Results
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-picks text-center p-5">
+            <h3>No picks yet!</h3>
+            <p>Start making your predictions for upcoming races.</p>
+            <a href="{% url 'schedule-list' %}" class="btn btn-primary">View Schedule</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

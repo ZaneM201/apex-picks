@@ -1,0 +1,393 @@
+/* Picks Form Styles */
+.picks-header, .my-picks-header, .leaderboard-header, .results-header {
+    margin: 30px 0;
+    color: var(--font-color);
+}
+
+.picks-form-container, .stats-card, .race-pick-card, .pick-card, .user-position-card, .results-card, .comparison-card, .breakdown-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: var(--accent-red);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* Form Styles */
+.picks-section {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+    color: var(--font-color);
+}
+
+.form-select, .form-select-lg {
+    background-color: var(--surface-color);
+    color: var(--font-color);
+    border: 1px solid var(--surface-color-2);
+}
+
+.form-select:focus, .form-select-lg:focus {
+    background-color: var(--surface-color);
+    color: var(--font-color);
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 0.25rem rgba(225, 6, 0, 0.25);
+}
+
+.form-select option {
+    background-color: var(--surface-color);
+    color: var(--font-color);
+}
+
+.points-info {
+    background: var(--surface-color);
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.points-list {
+    list-style: none;
+    padding-left: 0;
+    line-height: 2;
+}
+
+.points-list li {
+    padding: 5px 0;
+}
+
+/* Stats Card */
+.stat-item {
+    padding: 20px;
+    background: var(--surface-color);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.stat-item h3 {
+    color: var(--accent-red);
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.stat-item p {
+    color: var(--font-color);
+    margin: 0;
+}
+
+/* Race Pick Card */
+.race-pick-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.race-pick-card {
+    background: var(--surface-color);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.race-pick-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(225, 6, 0, 0.3);
+}
+
+/* Pick Card */
+.pick-card {
+    background: var(--surface-color);
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.pick-card-header {
+    background: var(--primary-color);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pick-card-header h3 {
+    margin: 0;
+    color: var(--font-color);
+}
+
+.pick-points {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.points-badge {
+    background: var(--accent-red);
+    color: var(--font-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.pick-details {
+    padding: 20px;
+}
+
+.predictions-list {
+    list-style: none;
+    padding-left: 0;
+    line-height: 2;
+}
+
+.predictions-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--surface-color-2);
+}
+
+.predictions-list li:last-child {
+    border-bottom: none;
+}
+
+/* Leaderboard */
+.leaderboard-table {
+    background: var(--surface-color);
+    border-radius: 15px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.table {
+    color: var(--font-color);
+    margin-bottom: 0;
+}
+
+.table thead {
+    background: var(--primary-color);
+}
+
+.table thead th {
+    color: var(--font-color);
+    border-bottom: 2px solid var(--accent-red);
+    padding: 15px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid var(--surface-color-2);
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: var(--primary-color);
+}
+
+.current-user-row {
+    background-color: rgba(225, 6, 0, 0.1);
+    border-left: 4px solid var(--accent-red);
+}
+
+.rank-cell {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.rank-medal {
+    font-size: 2rem;
+}
+
+.rank-number {
+    color: var(--font-color);
+}
+
+.player-name strong {
+    color: var(--font-color);
+    font-size: 1.1rem;
+}
+
+.points-value {
+    color: var(--accent-red);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Results Page */
+.actual-results {
+    margin-bottom: 40px;
+}
+
+.results-list {
+    list-style: none;
+    padding-left: 0;
+    line-height: 2.5;
+}
+
+.results-list li {
+    padding: 10px;
+    border-bottom: 1px solid var(--surface-color-2);
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.podium-first {
+    background: rgba(255, 215, 0, 0.1);
+    border-left: 4px solid gold;
+}
+
+.podium-second {
+    background: rgba(192, 192, 192, 0.1);
+    border-left: 4px solid silver;
+}
+
+.podium-third {
+    background: rgba(205, 127, 50, 0.1);
+    border-left: 4px solid #cd7f32;
+}
+
+.dnf-section {
+    background: var(--surface-color);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid var(--accent-red);
+}
+
+.dnf-list {
+    margin-top: 10px;
+}
+
+/* Comparison Table */
+.comparison-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--accent-red);
+}
+
+.pick-stats {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.points-earned {
+    background: var(--success-green);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.comparison-table .table {
+    margin-top: 20px;
+}
+
+.correct-pick {
+    background-color: rgba(40, 167, 69, 0.2);
+}
+
+/* Breakdown Cards */
+.breakdown-card h4 {
+    color: var(--accent-red);
+    margin-bottom: 20px;
+}
+
+.breakdown-list {
+    list-style: none;
+    padding-left: 0;
+    line-height: 2.5;
+}
+
+.breakdown-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--surface-color-2);
+}
+
+.breakdown-list li:last-child {
+    border-bottom: none;
+}
+
+.point-value {
+    background: var(--accent-red);
+    color: var(--font-color);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Badges */
+.badge {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+}
+
+/* Empty States */
+.no-picks,
+.no-standings {
+    background: var(--surface-color);
+    border-radius: 10px;
+    color: var(--font-color);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .picks-form-container,
+    .stats-card,
+    .race-pick-card,
+    .pick-card,
+    .results-card,
+    .comparison-card,
+    .breakdown-card {
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .stat-item h3 {
+        font-size: 2rem;
+    }
+
+    .pick-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .comparison-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .pick-stats {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 10px 5px;
+    }
+}

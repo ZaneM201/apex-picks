@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Leaderboard - Apex Picks{% endblock title %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/picks.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="leaderboard-header text-center mb-4">
+        <h1>🏆 Season Leaderboard</h1>
+        <p>Championship Standings - 2026 F1 Pick'em</p>
+        {% if total_races > 0 %}
+        <p class="text-muted">After {{ total_races }} races{{ total_races|pluralize }}</p>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated and user_stats %}
+    <div class="user-position-card mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3>Your Position</h3>
+                <p class="mb-0">
+                    <strong>Rank:</strong> #{{ user_rank }} |
+                    <strong>Points:</strong> {{ user_stats.total_points }} |
+                    <strong>Races:</strong> {{ user_stats.races_participated }}
+                </p>
+            </div>
+            <div class="col-md4 text-end">
+                <a href="{% url 'my-picks' %}" class="btn btn-primary">View My Picks</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="leaderboard-table">
+        {% if standings %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th class="text-center">Points</th>
+                        <th class="text-center">Races</th>
+                        <th class="text-center">Correct Wins</th>
+                        <th class="text-center">Correct Poles</th>
+                        <th class="text-center">Avg/Race</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in standings %}
+                    <tr class="{% if user.is_authenticated and stat.user == user %}current-user-row{% endif %}">
+                        <td class="rank-cell">
+                            {% if forloop.counter == 1 %}
+                                <span class="rank-medal gold">🥇</span>
+                            {% elif forloop.counter == 2 %}
+                                <span class="rank-medal silver">🥈</span>
+                            {% elif forloop.counter == 3 %}
+                                <span class="rank-medal bronze">🥉</span>
+                            {% else %}
+                                <span class="rank-number">{{ forloop.counter }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="player-name">
+                            <strong>{{ stat.user.username }}</strong>
+                            {% if stat.user.first_name %}
+                            <br><small class="text-muted">{{ stat.user.first_name }} {{ stat.user.last_name }}</small>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <span class="points-value">{{ stat.total_points }}</span>
+                        </td>
+                        <td class="text-center">{{ stat.races_participated }}</td>
+                        <td class="text-center">{{ stat.correct_wins }}</td>
+                        <td class="text-center">{{ stat.correct_poles }}</td>
+                        <td class="text-center">
+                            {% if stat.races_participated > 0 %}
+                                {% widthratio stat.total_points stat.races_participated 1 %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="no-standings text-center p-5">
+            <h3>No Standings Yet</h3>
+            <p>Be the first to make picks and appear on the leaderboard!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'schedule-list' %}" class="btn btn-primary">Make Your Picks Now</a>
+            {% else %}
+            <a href="{% url 'login' %}?next={% url 'schedule-list' %}" class="btn btn-primary">Log In to Make Picks</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Points Breakdown Section -->
+    <div class="points-breakdown mt-5">
+        <h3 class="text-center mb-4">📊 How Points Are Awarded</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="breakdown-card">
+                    <h4>Race Weekend</h4>
+                    <ul class="breakdown-list">
+                        <li><span class="point-value">25</span> - Correct 1st Place</li>
+                        <li><span class="point-value">18</span> - Correct 2nd Place</li>
+                        <li><span class="point-value">15</span> - Correct 3rd Place</li>
+                        <li><span class="point-value">10</span> - Correct Pole Position</li>
+                        <li><span class="point-value">5</span> - Correct Fastest Lap</li>
+                        <li><span class="point-value">20</span> - Correct Driver of the Day</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="breakdown-card">
+                    <h4>Sprint Weekend</h4>
+                    <ul class="breakdown-list">
+                        <li><span class="point-value">8</span> - Correct Sprint 1st</li>
+                        <li><span class="point-value">7</span> - Correct Sprint 2nd</li>
+                        <li><span class="point-value">6</span> - Correct Sprint 3rd</li>
+                    </ul>
+                    <div class="alert alert-danger mt-3">
+                        <strong>⚠️ DNF Penalty:</strong> Lose points if your podium pick doesn't finish!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('drivers.urls')),
     path('schedule/', include('schedule.urls')),
     path('users/', include('users.urls')),
+    path('picks/', include('picks.urls')),
     path('', include('pages.urls')),
 ]
 

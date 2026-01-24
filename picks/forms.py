@@ -2,14 +2,17 @@ from django import forms
 from .models import RacePick
 from drivers.models import Driver
 
+
 class RacePickForm(forms.ModelForm):
+    """Form for users to submit their race picks"""
+    
     class Meta:
         model = RacePick
         fields = [
             'first_place', 'second_place', 'third_place',
-            'pole_position', 'fastest_lap', 'driver_of_the_day',
+            'pole_position', 'fastest_lap', 'driver_of_day'
         ]
-
+        
         labels = {
             'first_place': '🥇 1st Place',
             'second_place': '🥈 2nd Place',
@@ -18,7 +21,7 @@ class RacePickForm(forms.ModelForm):
             'fastest_lap': '⏱️ Fastest Lap',
             'driver_of_day': '⭐ Driver of the Day',
         }
-
+        
         widgets = {
             'first_place': forms.Select(attrs={
                 'class': 'form-select form-select-lg mb-3',
@@ -45,17 +48,17 @@ class RacePickForm(forms.ModelForm):
                 'required': True
             }),
         }
-
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Order divers by number
+        # Order drivers by number for easier selection
         drivers = Driver.objects.all().order_by('number')
-
+        
         for field_name in self.fields:
             self.fields[field_name].queryset = drivers
-            # Custom display fomrat
-            self.fields[field_name].label_from_instance = lambda obj: f"#{obj.number} - {obj.first_name} {obj.last_name} ({obj.team.name})"
-
+            # Custom display format
+            self.fields[field_name].label_from_instance = lambda obj: f"#{obj.number} {obj.first_name} {obj.last_name} ({obj.team.name})"
+    
     def clean(self):
         """Validate that podium picks are different drivers"""
         cleaned_data = super().clean()

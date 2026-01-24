@@ -19,5 +19,26 @@
     <p><strong>Sprint Race:</strong> No</p>
     {% endif %}
     <p><strong>Additional Info:</strong> {{ schedule.description|linebreaks }}</p>
+
+    <div class="race-actions mt-4">
+        {% if user.is_authenticated %}
+            <a href="{% url 'submit-picks' schedule.id %}" class="btn btn-success btn-lg">
+                🏎️ Make Your Picks
+            </a>
+        {% else %}
+            <p class="mt-3">Please <a href="{% url 'login' %}">login</a> to make your picks!</p>
+        {% endif %}
+        
+        <!-- Show results button if race results are finalized -->
+        {% if schedule.result.results_finalized %}
+            <a href="{% url 'race-results' schedule.id %}" class="btn btn-info btn-lg ms-2">
+                📊 View Results
+            </a>
+        {% endif %}
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'schedule-list' %}" class="btn btn-secondary">← Back to Schedule</a>
+    </div>
 </div>
 {% endblock content %}
