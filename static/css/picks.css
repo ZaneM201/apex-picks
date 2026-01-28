@@ -1,4 +1,4 @@
-/* Picks Form Styles */
+/* Picks Form */
 .picks-header, .my-picks-header, .leaderboard-header, .results-header {
     margin: 30px 0;
     color: var(--font-color);
@@ -18,7 +18,7 @@
     font-size: 1.8rem;
 }
 
-/* Form Styles */
+/* Form */
 .picks-section {
     margin-bottom: 30px;
 }
@@ -172,8 +172,9 @@
 }
 
 .table {
-    color: var(--font-color);
+    color: var(--font-color-2);
     margin-bottom: 0;
+    background-color: #ffffff;
 }
 
 .table thead {
@@ -181,18 +182,27 @@
 }
 
 .table thead th {
-    color: var(--font-color);
+    color: var(--font-color-2) !important;
     border-bottom: 2px solid var(--accent-red);
     padding: 15px;
 }
 
 .table tbody tr {
-    border-bottom: 1px solid var(--surface-color-2);
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
     transition: background-color 0.3s ease;
 }
 
 .table tbody tr:hover {
-    background-color: var(--primary-color);
+    background-color: var(--surface-color-2);
+}
+
+.table tbody tr:hover td {
+    color: var(--font-color);
+}
+
+.table tbody td {
+    color: var(--font-color-2) !important;
 }
 
 .current-user-row {
@@ -210,11 +220,11 @@
 }
 
 .rank-number {
-    color: var(--font-color);
+    color: var(--font-color-2) !important;
 }
 
 .player-name strong {
-    color: var(--font-color);
+    color: var(--font-color-2) !important;
     font-size: 1.1rem;
 }
 

@@ -24,3 +24,20 @@
     color: var(--primary-color);
     border-color: var(--success-green);
 }
+
+.login-links {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--surface-color-2);
+}
+
+.login-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}

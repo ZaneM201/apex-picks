@@ -128,7 +128,7 @@ class RaceResultAdmin(admin.ModelAdmin):
         # Calculate points for all picks for this race
         picks = RacePick.objects.filter(race=obj.race)
         for pick in picks:
-            pick.points_earned = obj.point_calculatation(pick)
+            pick.points_earned = obj.calculate_points_for_pick(pick)
             pick.save()
 
         # Update user season stats
