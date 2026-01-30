@@ -23,3 +23,18 @@ python manage.py startapp pages
 # you need to run migrations
 python manage.py makemigrations
 python manage.py migrate
+
+#Final Race Results with proper scoring.
+1. Enter results in admin panel 
+2. DO NOT check the "results_finalized" checkbox
+3. Save the RaceResult
+4. Run the shell comand to finalize:
+    python manage.py shell
+
+    from picks.models import RaceResult
+    result = RaceResult.objects.get(race__name__icontains="[Race Name]")
+    result.finalize_results()
+    exit()
+
+# Delete Stats after testing
+1. In the command prompt run: python manage.py shell -c "from picks.models import UserSeasonStats; UserSeasonStats.objects.all().delete(); print('Stats deleted')"

@@ -130,6 +130,39 @@ class RaceResult(models.Model):
 
         return points
 
+    def finalize_results(self):
+        """Calculate points for all picks when results are finalized"""
+        if self.results_finalized:
+            return  # Already finalized, don't recalculate
+        
+        # Get all picks for this race
+        all_picks = RacePick.objects.filter(race=self.race)
+        
+        for pick in all_picks:
+            # Calculate points using the existing method
+            points = self.calculate_points_for_pick(pick)
+            
+            # Save to the pick
+            pick.points_earned = points
+            pick.picks_locked = True
+            pick.save()
+            
+            # Update user's season stats
+            user_stats, created = UserSeasonStats.objects.get_or_create(user=pick.user)
+            user_stats.total_points += points
+            user_stats.races_participated += 1
+            
+            # Track correct predictions
+            if pick.first_place == self.first_place:
+                user_stats.correct_wins += 1
+            if pick.pole_position == self.pole_position:
+                user_stats.correct_poles += 1
+                
+            user_stats.save()
+        
+        # Mark results as finalized
+        self.results_finalized = True
+        self.save()
 
 class UserSeasonStats(models.Model):
     """Track user's overall season statistics"""
