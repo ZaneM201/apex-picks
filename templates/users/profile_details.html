@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ profile.user.username }}'s Profile{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <div class="row profile-header">
+        <div class="col-md-12">
+            <div class="profile-header-card">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <h1>{{ profile_user.username }}</h1>
+                        <p class="profile-subtitle mb-0">
+                            {% if profile_user.first_name or profile_user.last_name %}
+                                {{ profile_user.first_name }} {{ profile_user.last_name }}
+                            {% endif %}
+                            Member since: {{ profile_user.date_joined|date:"F Y" }}
+                        </p>
+                    </div>
+                    {% if is_own_profile %}
+                    <div class="mt-3 mt-md-0">
+                        <a href="{% url 'profile_update' %}" class="btn-primary-custom">Edit Profile</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Season Stats -->
+    <div class="row stats-overview">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <h5>Total Points</h5>
+                <h2 class="text-primary">{{ season_stats.total_points }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <h5>Season Rank</h5>
+                <h2 class="text-success">
+                    {% if user_rank %}
+                        #{{ user_rank }}
+                        <small>/ {{ total_players }}</small>
+                    {% else %}
+                        -
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <h5>Races</h5>
+                <h2>{{ season_stats.races_participated }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <h5>Avg Points</h5>
+                <h2>{{ avg_points_per_race|default:"0.0" }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Stats -->
+     <div class="row detailed-stats">
+        <div class="col-md-6 mb-3">
+            <div class="accuracy-card">
+                <div class="card-header-custom">
+                    <h5>Prediction Accuracy</h5>
+                </div>
+                <div class="accuracy-item">
+                    <div class="accuracy-label">
+                        <span>Race Winners</span>
+                        <span><strong>{{ season_stats.correct_wins }}</strong> / {{ season_stats.races_participated }}</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: {{ win_accuracy|default:0 }}%%;">
+                            <span class="progress-text">{{ win_accuracy|default:"0.0" }}%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accuracy-item">
+                    <div class="accuracy-label">
+                        <span>Pole Positions</span>
+                        <span><strong>{{ season_stats.correct_poles }}</strong> / {{ season_stats.races_participated }}</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar"
+                            style="width: {{ pole_accuracy|default:0 }}%%;">
+                            <span class="progress-text">{{ pole_accuracy|default:"0.0" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accuracy-item">
+                    <div class="accuracy-label">
+                        <span>Podium Picks</span>
+                        <span><strong>{{ podium_predictions|default:0 }}</strong> correct</span>
+                    </div>
+                    <div class="progress">
+                        {% if season_stats.races_participated > 0 %}
+                            {% widthratio podium_predictions|default:0 season_stats.races_participated 100 as podium_pct %}
+                            <div class="progress-bar bg-warning" role="progressbar"
+                                 style="width: {{ podium_pct }}%%;">
+                                <span class="progress-text">{{ podium_pct }}%</span>
+                            </div>
+                        {% else %}
+                            <div class="progress-bar bg-warning" role="progressbar"
+                                 style="width: 0%;">
+                                <span class="progress-text">0%</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="highlight-card">
+                <div class="card-header-custom">
+                    <h5>Highlights</h5>
+                </div>
+                {% if best_race %}
+                <div class="best-race-highlight">
+                    <h6>Best Race Performance</h6>
+                    <div class="best-race-info">
+                        <div>
+                            <strong>{{ best_race.race_name }}</strong>
+                            <small>{{ best_race.race.date|date:"F d, Y" }}</small>
+                        </div>
+                        <div>
+                            <span class="points-badge-large">{{ best_race.points_earned }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="no-data-message">No race picks yet. Start making predictions</p>
+                {% endif %}
+
+                {% if season_stats.races_participated > 0 %}
+                <hr style="border-color: var(--surface-color-2); margin: 20px 0;">
+                <div class="stats-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Total Wins</span>
+                        <div class="summary-value">{{ season_stats.correct_wins }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Total Poles</span>
+                        <div class="summary-value">{{ season_stats.correct_poles }}</div>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Races</span>
+                        <div class="summary-value">{{ season_stats.races_participated }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Picks History -->
+     <div class="row">
+        <div class="col-md-12">
+            <div class="picks-history-card">
+                <div class="picks-header">
+                    <h5>📊 Recent Picks</h5>
+                    {% if is_own_profile %}
+                    <a href="{% url 'my-picks' %}" class="btn-outline-custom">
+                        View All Picks
+                    </a>
+                    {% endif %}
+                </div>
+                {% if recent_picks %}
+                <div class="picks-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Race</th>
+                                <th>Date</th>
+                                <th>1st Place</th>
+                                <th>2nd Place</th>
+                                <th>3rd Place</th>
+                                <th class="text-end">Points</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pick in recent_picks %}
+                            <tr>
+                                <td><strong>{{ pick.race.name }}</strong></td>
+                                <td>{{ pick.race.date|date:"M d" }}</td>
+                                <td>{{ pick.first_place.last_name }}</td>
+                                <td>{{ pick.second_place.last_name }}</td>
+                                <td>{{ pick.third_place.last_name }}</td>
+                                <td class="text-end">
+                                    <span class="points-badge {% if pick.points_earned > 0 %}points-positive{% elif pick.points_earned < 0 %}points-negative{% else %}points-neutral{% endif %}">
+                                        {{ pick.points_earned }} pts
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    {% if pick.picks_locked %}
+                                        <span class="status-badge badge-locked">🔒 Locked</span>
+                                    {% else %}
+                                        <span class="status-badge badge-pending">⏳ Pending</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <p>No picks submitted yet.</p>
+                    {% if is_own_profile %}
+                    <a href="{% url 'schedule-list' %}" class="btn-primary-custom">
+                        View Schedule & Make Picks
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>   
+</div>
+{% endblock content %}

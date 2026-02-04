@@ -1,0 +1,492 @@
+/* Profile Page Styles */
+
+.profile-header {
+    margin: 30px 0;
+}
+
+.profile-header-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    border-radius: 15px;
+    padding: 30px 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.profile-header-card h1 {
+    color: var(--font-color);
+    margin-bottom: 5px;
+}
+
+.profile-subtitle {
+    color: var(--font-color);
+    opacity: 0.8;
+}
+
+/* Stats Cards */
+.stats-overview {
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h5 {
+    color: var(--font-color);
+    opacity: 0.8;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-card h2 {
+    color: var(--accent-red);
+    font-size: 2.5rem;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.stat-card .text-primary {
+    color: var(--secondary-color) !important;
+}
+
+.stat-card .text-success {
+    color: var(--success-green) !important;
+}
+
+.stat-card small {
+    color: var(--font-color);
+    opacity: 0.6;
+}
+
+/* Detailed Stats Section */
+.detailed-stats {
+    margin-bottom: 30px;
+}
+
+.accuracy-card,
+.highlights-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.card-header-custom {
+    border-bottom: 2px solid var(--accent-red);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.card-header-custom h5 {
+    color: var(--accent-red);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Progress Bars */
+.accuracy-item {
+    margin-bottom: 25px;
+}
+
+.accuracy-item:last-child {
+    margin-bottom: 0;
+}
+
+.accuracy-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: var(--font-color);
+}
+
+.accuracy-label span:first-child {
+    font-weight: 500;
+}
+
+.accuracy-label strong {
+    color: var(--accent-red);
+}
+
+.progress {
+    height: 30px;
+    background-color: var(--surface-color);
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: width 0.6s ease;
+    position: relative;
+}
+
+/* Progress text styling */
+.progress-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    white-space: nowrap;
+}
+
+/* For narrow progress bars (less than 10% width), move text to the right */
+.progress-bar[style*="width: 0%"] .progress-text,
+.progress-bar[style*="width: 1%"] .progress-text,
+.progress-bar[style*="width: 2%"] .progress-text,
+.progress-bar[style*="width: 3%"] .progress-text,
+.progress-bar[style*="width: 4%"] .progress-text,
+.progress-bar[style*="width: 5%"] .progress-text,
+.progress-bar[style*="width: 6%"] .progress-text,
+.progress-bar[style*="width: 7%"] .progress-text,
+.progress-bar[style*="width: 8%"] .progress-text,
+.progress-bar[style*="width: 9%"] .progress-text {
+    left: auto;
+    right: -55px;
+    transform: none;
+    color: #cacbed; /* var(--font-color) value */
+    text-shadow: none;
+}
+
+/* Specific color classes */
+.progress-bar.bg-success {
+    background-color: var(--success-green) !important;
+}
+
+.progress-bar.bg-info {
+    background-color: var(--secondary-color) !important;
+}
+
+.progress-bar.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.progress-bar.bg-warning .progress-text {
+    color: #333333; /* Darker text for yellow background */
+}
+
+/* Highlights Section */
+.best-race-highlight {
+    background: var(--surface-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.best-race-highlight h6 {
+    color: var(--font-color);
+    opacity: 0.8;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.best-race-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.best-race-info strong {
+    color: var(--font-color);
+    font-size: 1.2rem;
+}
+
+.best-race-info small {
+    color: var(--font-color);
+    opacity: 0.7;
+    display: block;
+    margin-top: 5px;
+}
+
+.points-badge-large {
+    background-color: var(--success-green);
+    color: var(--font-color);
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.stats-summary {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--surface-color-2);
+}
+
+.summary-item {
+    flex: 1;
+}
+
+.summary-label {
+    color: var(--font-color);
+    opacity: 0.7;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.summary-value {
+    color: var(--accent-red);
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.no-data-message {
+    color: var(--font-color);
+    opacity: 0.7;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Recent Picks Section */
+.picks-history-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--surface-color-2) 100%);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.picks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--accent-red);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.picks-header h5 {
+    color: var(--accent-red);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Table Styles */
+.picks-table {
+    background: var(--surface-color);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.picks-table table {
+    width: 100%;
+    margin-bottom: 0;
+    color: var(--font-color);
+}
+
+.picks-table thead {
+    background: var(--primary-color);
+}
+
+.picks-table thead th {
+    color: var(--font-color);
+    padding: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--accent-red);
+}
+
+.picks-table tbody tr {
+    border-bottom: 1px solid var(--surface-color-2);
+    transition: background-color 0.3s ease;
+}
+
+.picks-table tbody tr:hover {
+    background-color: var(--primary-color);
+}
+
+.picks-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.picks-table tbody td {
+    padding: 15px;
+    color: var(--font-color);
+}
+
+.picks-table tbody td strong {
+    color: var(--accent-red);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.badge-locked {
+    background-color: var(--surface-color-2);
+    color: var(--font-color);
+}
+
+.badge-pending {
+    background-color: #ffc107;
+    color: var(--font-color-2);
+}
+
+/* Points Badges */
+.points-badge {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.points-positive {
+    background-color: var(--success-green);
+    color: var(--font-color);
+}
+
+.points-negative {
+    background-color: var(--accent-red);
+    color: var(--font-color);
+}
+
+.points-neutral {
+    background-color: var(--surface-color-2);
+    color: var(--font-color);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--font-color);
+}
+
+.empty-state p {
+    opacity: 0.7;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+/* Buttons */
+.btn-primary-custom {
+    background-color: var(--success-green);
+    color: var(--font-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary-custom:hover {
+    background-color: #22946e;
+    color: var(--font-color);
+}
+
+.btn-outline-custom {
+    background-color: transparent;
+    color: var(--secondary-color);
+    padding: 8px 16px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-custom:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .profile-header-card {
+        padding: 20px;
+    }
+
+    .profile-header-card h1 {
+        font-size: 1.8rem;
+    }
+
+    .stat-card {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    .stat-card h2 {
+        font-size: 2rem;
+    }
+
+    .accuracy-card,
+    .highlights-card,
+    .picks-history-card {
+        padding: 20px;
+    }
+
+    .card-header-custom h5,
+    .picks-header h5 {
+        font-size: 1.3rem;
+    }
+
+    .best-race-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .stats-summary {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Make table responsive */
+    .picks-table {
+        overflow-x: auto;
+    }
+
+    .picks-table table {
+        min-width: 600px;
+    }
+
+    .picks-table thead th,
+    .picks-table tbody td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+
+    .picks-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .empty-state {
+        padding: 40px 15px;
+    }
+}

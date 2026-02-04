@@ -1,0 +1,22 @@
+# install pillow (in case that your project uses media)
+pip install pillow
+
+# install gunicorn
+pip install gunicorn
+
+#install whitenoise
+pip install whitenoise
+
+# create requirements.txt
+pip freeze > requirements.txt
+
+# config setting.py
+'django.middleware.security.SecurityMiddleware',
+'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
+'django.contrib.sessions.middleware.SessionMiddleware',
+
+
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
