@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Update Profile - Apex Picks{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block content %}
+<div class="">
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h1>Update Profile</h1>
+
+        {{ form.as_p }}
+
+        <button class="btn btn-outline-primary" type="submit">Save</button>
+
+    </form>
+</div>
+{% endblock content %}

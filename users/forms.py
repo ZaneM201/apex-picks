@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Profile
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -16,3 +17,10 @@ class UserRegisterForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email address is already in use.")
         return email
+
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['picture', 'phone_number', 'zip_code']

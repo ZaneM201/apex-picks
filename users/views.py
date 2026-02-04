@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
+from django.views.generic import UpdateView, DetailView
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, ProfileForm
+from .models import Profile
 
 
 # Create your views here.
@@ -29,6 +31,8 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+    Profile.objects.create(user=user)
+
 # Password Reset Views
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'users/password_reset.html'
@@ -45,3 +49,18 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'users/password_reset_complete.html' 
+
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'users/profile_update.html'
+    success_url = reverse_lazy('home') # should redirect to profile view
+
+    def get_object(self):
+        # Reads the record (that will be modified) from db
+        profile = Profile.objects.get(user=self.request.user)
+        return profile
+
+class ProfileDetails(DetailView):
+    model = Profile
+    template_name = 'users/profile_details.html'

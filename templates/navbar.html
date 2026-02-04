@@ -30,8 +30,15 @@
       </ul>
       <div class="d-flex ms-auto">
         {% if user.is_authenticated %}
-        <button class="btn btn-outline-primary">{{ user.username }}</button>
-        <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a>
+        <div class="nav-item dropdown">
+          <button class="btn btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown">
+            {{ user.username }}
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'profile_update' %}">Update Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </div>
         {% else %}
         <a class="btn btn-outline-primary" href="{% url 'login' %}">Login</a>
         <a class="btn btn-outline-primary" href="{% url 'register' %}">Register</a>
