@@ -137,7 +137,7 @@ MEDIA_URL = 'media'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Use S3 for media files in production
-if os.environ.get('USE_S3') == 'True':
+if USE_S3:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     AWS_STORAGE_BUCKET_NAME = 'apex-picks-media'
