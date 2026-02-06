@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 import dj_database_url
 
-USE_S3 = os.environ.get("USE_S3") == "True"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,15 +137,14 @@ STATICFILES_STORAGE  = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = 'media'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Use S3 for media files in production
-if USE_S3:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# Always use S3 for media files in this deployed app
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-    AWS_STORAGE_BUCKET_NAME = 'apex-picks-media'
-    AWS_S3_REGION_NAME = 'us-east-2'
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+AWS_STORAGE_BUCKET_NAME = 'apex-picks-media'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
 
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # Email Configuration for Password Reset
 # For development/testing - prints emails to console
