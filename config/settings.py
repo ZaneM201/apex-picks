@@ -137,8 +137,14 @@ STATICFILES_STORAGE  = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = 'media'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Always use S3 for media files in this deployed app
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 AWS_STORAGE_BUCKET_NAME = 'apex-picks-media'
 AWS_S3_REGION_NAME = 'us-east-2'
