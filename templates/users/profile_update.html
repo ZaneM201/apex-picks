@@ -5,21 +5,41 @@
 {% block title %}Update Profile - Apex Picks{% endblock title %}
 
 {% block css %}
-
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
 {% endblock css %}
 
 {% block content %}
-<div class="">
+  <h1>Update Profile</h1>
 
-    <form method="post" enctype="multipart/form-data">
+  <div class="contact-form">
+    <div class="form">
+      <form method="post">
         {% csrf_token %}
 
-        <h1>Update Profile</h1>
+        {% if form.non_field_errors %}
+          <ul class="errorlist">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
 
-        {{ form.as_p }}
+        {% for field in form %}
+          <div>
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <ul class="errorlist">
+                {% for error in field.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endfor %}
 
-        <button class="btn btn-outline-primary" type="submit">Save</button>
-
-    </form>
-</div>
+        <button type="submit" class="btn-primary">Save changes</button>
+      </form>
+    </div>
+  </div>
 {% endblock content %}
