@@ -117,19 +117,25 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
             context['total_players'] = total_players
         
         # Get user's picks (recent first)
-        user_picks = RacePick.objects.filter(
-            user=profile_user
-        ).select_related('race').order_by('-race__date')[:10]
+        user_picks = (
+            RacePick.objects.filter(user=profile_user)
+            .select_related('race')
+            .order_by('-race__date')[:10]
+        )
         context['recent_picks'] = user_picks
         
         # Calculate additional stats
         if user_picks.exists():
-            # Average points per race
+            # Average points per race (on recent picks)
             avg_points = user_picks.aggregate(Avg('points_earned'))['points_earned__avg']
             context['avg_points_per_race'] = round(avg_points, 1) if avg_points else 0
             
-            # Best race (highest points)
-            best_race = user_picks.order_by('-points_earned').first()
+            # Best race (highest points) – use a fresh queryset, not user_picks
+            best_race = (
+                RacePick.objects.filter(user=profile_user)
+                .order_by('-points_earned')
+                .first()
+            )
             context['best_race'] = best_race
             
             # Count podium predictions (any position correct)
@@ -137,9 +143,11 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
             for pick in user_picks:
                 try:
                     result = pick.race.result
-                    if (pick.first_place == result.first_place or 
-                        pick.second_place == result.second_place or 
-                        pick.third_place == result.third_place):
+                    if (
+                        pick.first_place == result.first_place
+                        or pick.second_place == result.second_place
+                        or pick.third_place == result.third_place
+                    ):
                         podium_correct += 1
                 except RaceResult.DoesNotExist:
                     continue
@@ -157,4 +165,4 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
         # Check if viewing own profile
         context['is_own_profile'] = (self.request.user == profile_user)
         
-        return context 
+        return context
