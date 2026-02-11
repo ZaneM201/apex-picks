@@ -126,7 +126,7 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
 
         # Calculate additional stats
         if user_picks.exists():
-            # Average points per race
+            # Average points per race (on recent picks)
             avg_points = user_picks.aggregate(Avg('points_earned'))['points_earned__avg']
             context['avg_points_per_race'] = round(avg_points, 1) if avg_points else 0
             
@@ -165,4 +165,4 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
         # Check if viewing own profile
         context['is_own_profile'] = (self.request.user == profile_user)
         
-        return context 
+        return context
