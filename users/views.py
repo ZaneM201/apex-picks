@@ -143,14 +143,16 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
             for pick in user_picks:
                 try:
                     result = pick.race.result
-                    if (
-                        pick.first_place == result.first_palce
-                        or pick.second_place == result.second_place
-                        or pick.third_place == result.third_place
-                    ):
-                        podium_correct +=1
                 except RacePick.DoesNotExist:
                     continue
+
+                if (
+                    pick.first_place == result.first_palce
+                    or pick.second_place == result.second_place
+                    or pick.third_place == result.third_place
+                ):
+                    podium_correct +=1
+                
             context['podium_predictions'] = podium_correct
             
             # Accuracy percentages
