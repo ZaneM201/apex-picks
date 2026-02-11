@@ -143,7 +143,7 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
             for pick in user_picks:
                 try:
                     result = pick.race.result
-                except RacePick.DoesNotExist:
+                except RaceResult.DoesNotExist:
                     continue
 
                 if (
