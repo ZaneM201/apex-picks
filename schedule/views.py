@@ -9,6 +9,11 @@ class ScheduleListView(ListView):
     template_name = 'schedule/schedule_list.html'
     context_object_name = 'schedules'
 
+    def get_queryset(self):
+        return (
+            Schedule.objects.filter(date__year=2026).order_by('date')
+        )
+
 class ScheduleDetailView(DetailView):
     model = Schedule
     template_name = 'schedule/schedule_detail.html'
