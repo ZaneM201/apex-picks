@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models import Sum, F
 from drivers.models import Driver
 from schedule.models import Schedule
 
 
-class RacePick(models.Model):  # Changed from RacePicks to RacePick (singular)
+class RacePick(models.Model):
     """User's picks for a specific race"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='race_picks')
     race = models.ForeignKey(Schedule, on_delete=models.CASCADE, related_name='picks')
@@ -16,7 +17,7 @@ class RacePick(models.Model):  # Changed from RacePicks to RacePick (singular)
     third_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='third_place_picks')
     pole_position = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='pole_picks')
     fastest_lap = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='fastest_lap_picks')
-    driver_of_day = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='dotd_picks',)  
+    driver_of_day = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='dotd_picks')
 
     # Sprint predictions (if applicable)
     sprint_first = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='sprint_first_picks', null=True, blank=True)
@@ -65,12 +66,12 @@ class RaceResult(models.Model):
     first_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='first_place_results')
     second_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='second_place_results')
     third_place = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='third_place_results')
-    pole_position = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='pole_results')  
+    pole_position = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='pole_results')
     fastest_lap = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='fastest_lap_results')
-    driver_of_day = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='dotd_results', null=True, blank=True)  
+    driver_of_day = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='dotd_results', null=True, blank=True)
 
     # DNFs for penalty calculation
-    dnf_drivers = models.ManyToManyField(Driver, related_name='dnf_races', blank=True)  # Changed related_name
+    dnf_drivers = models.ManyToManyField(Driver, related_name='dnf_races', blank=True)
 
     # Sprint results (if applicable)
     sprint_first = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='sprint_first_results', null=True, blank=True)
@@ -82,7 +83,7 @@ class RaceResult(models.Model):
     def __str__(self):
         return f"Results: {self.race.name}"
 
-    def calculate_points_for_pick(self, race_pick):  # Fixed method name and parameter
+    def calculate_points_for_pick(self, race_pick):
         """Calculate points for a user's pick based on actual results"""
         points = 0
 
@@ -131,38 +132,48 @@ class RaceResult(models.Model):
         return points
 
     def finalize_results(self):
-        """Calculate points for all picks when results are finalized"""
+        """Score this race and rebuild season stats from all picks."""
         if self.results_finalized:
             return  # Already finalized, don't recalculate
-        
-        # Get all picks for this race
+
+        # 1) Score all picks for this race
         all_picks = RacePick.objects.filter(race=self.race)
-        
+
         for pick in all_picks:
-            # Calculate points using the existing method
             points = self.calculate_points_for_pick(pick)
-            
-            # Save to the pick
             pick.points_earned = points
             pick.picks_locked = True
             pick.save()
-            
-            # Update user's season stats
-            user_stats, created = UserSeasonStats.objects.get_or_create(user=pick.user)
-            user_stats.total_points += points
-            user_stats.races_participated += 1
-            
-            # Track correct predictions
-            if pick.first_place == self.first_place:
-                user_stats.correct_wins += 1
-            if pick.pole_position == self.pole_position:
-                user_stats.correct_poles += 1
-                
-            user_stats.save()
-        
-        # Mark results as finalized
+
+        # 2) Rebuild UserSeasonStats from ALL picks
+        from picks.models import UserSeasonStats  # local import to avoid circulars
+
+        for stats in UserSeasonStats.objects.all():
+            user_picks = RacePick.objects.filter(user=stats.user)
+
+            # total points over all races
+            agg = user_picks.aggregate(total=Sum("points_earned"))
+            stats.total_points = agg["total"] or 0
+
+            # distinct races this user has picks for
+            stats.races_participated = user_picks.values("race").distinct().count()
+
+            # correct wins: picked winner matches actual winner
+            stats.correct_wins = user_picks.filter(
+                race__result__first_place=F("first_place")
+            ).count()
+
+            # correct poles: picked pole matches actual pole
+            stats.correct_poles = user_picks.filter(
+                race__result__pole_position=F("pole_position")
+            ).count()
+
+            stats.save()
+
+        # 3) Mark this race as finalized
         self.results_finalized = True
         self.save()
+
 
 class UserSeasonStats(models.Model):
     """Track user's overall season statistics"""
