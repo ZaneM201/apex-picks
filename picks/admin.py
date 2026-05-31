@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import RacePick, RaceResult, UserSeasonStats
 from django.contrib.auth.models import User
+
+from .models import RacePick, RaceResult, UserSeasonStats
 
 
 @admin.register(RacePick)
@@ -13,32 +14,26 @@ class RacePickAdmin(admin.ModelAdmin):
     
     def get_fieldsets(self, request, obj=None):
         """Show/hide sprint picks based on race type"""
-        fieldsets =[
+        return [
             ('Picks Information', {
                 'fields': ('user', 'race', 'points_earned', 'picks_locked')
-            }),
-            ('Race Predictions', {
-                'fields': ('first_place', 'second_place', 'third_place',
-                           'pole_position', 'fastest_lap', 'driver_of_day')
             })
-        ]
-
-        # Show sprint section if it's a sprint weekend
-        if obj and obj.race and obj.race.sprint_race:
-            fieldsets.append(
-                ('Sprint Predictions', {
-                    'fields': ('sprint_first', 'sprint_second', 'sprint_third'),
-                })
-            )
-
-        fieldsets.append(
+            ('Race Predictions', {
+                'fields': (
+                    'first_place', 'second_place', 'third_place',
+                    'pole_position', 'fastest_lap', 'driver_of_day'
+                )
+            })
+            ('Sprint Predictions', {
+                'fields': ('sprint_first', 'sprint_second', 'sprint_third'),
+                'classes': ('collapse',),
+                'description': 'Only fill these for sprint weekends.'
+            }),
             ('Timestamps', {
                 'fields': ('submitted_at', 'updated_at'),
-                'classes': ('collapse',)
-            })
-        )
-
-        return fieldsets
+                'classes': ('collapse',),
+            })    
+        ]
     
     actions = ['lock_picks', 'unlock_picks']
     
@@ -46,18 +41,23 @@ class RacePickAdmin(admin.ModelAdmin):
         """Lock selected picks so they cannot be edited"""
         updated = queryset.update(picks_locked=True)
         self.message_user(request, f'{updated} pick(s) successfully locked.')
+
     lock_picks.short_description = "Lock selected picks"
     
     def unlock_picks(self, request, queryset):
         """Unlock selected picks"""
         updated = queryset.update(picks_locked=False)
         self.message_user(request, f'{updated} pick(s) successfully unlocked.')
+
     unlock_picks.short_description = "Unlock selected picks"
 
 
 @admin.register(RaceResult)
 class RaceResultAdmin(admin.ModelAdmin):
-    list_display = ['race', 'first_place', 'second_place', 'third_place', 'results_finalized', 'has_driver_of_day', 'dnf_count']
+    list_display = [
+        'race', 'first_place', 'second_place', 'third_place', 
+        'results_finalized', 'has_driver_of_day', 'dnf_count'
+        ]
     list_filter = ['results_finalized', 'race__date', 'race__sprint_race']
     search_fields = ['race__name']
     ordering = ['-race__date']
