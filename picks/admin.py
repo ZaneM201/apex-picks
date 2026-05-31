@@ -13,17 +13,16 @@ class RacePickAdmin(admin.ModelAdmin):
     readonly_fields = ['submitted_at', 'updated_at']
     
     def get_fieldsets(self, request, obj=None):
-        """Show/hide sprint picks based on race type"""
         return [
             ('Picks Information', {
                 'fields': ('user', 'race', 'points_earned', 'picks_locked')
-            })
+            }),
             ('Race Predictions', {
                 'fields': (
                     'first_place', 'second_place', 'third_place',
                     'pole_position', 'fastest_lap', 'driver_of_day'
                 )
-            })
+            }),
             ('Sprint Predictions', {
                 'fields': ('sprint_first', 'sprint_second', 'sprint_third'),
                 'classes': ('collapse',),
@@ -31,8 +30,8 @@ class RacePickAdmin(admin.ModelAdmin):
             }),
             ('Timestamps', {
                 'fields': ('submitted_at', 'updated_at'),
-                'classes': ('collapse',),
-            })    
+                'classes': ('collapse',)
+            }),
         ]
     
     actions = ['lock_picks', 'unlock_picks']
