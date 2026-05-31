@@ -29,7 +29,7 @@ python manage.py migrate
 2. DO NOT check the "results_finalized" checkbox
 3. Save the RaceResult
 4. Run the shell comand to finalize:
-    python manage.py shell
+    heroku run python manage.py shell
 
     from picks.models import RaceResult
     result = RaceResult.objects.get(race__name__icontains="[Race Name]")

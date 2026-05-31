@@ -147,7 +147,7 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
                     continue
 
                 if (
-                    pick.first_place == result.first_palce
+                    pick.first_place == result.first_place
                     or pick.second_place == result.second_place
                     or pick.third_place == result.third_place
                 ):
