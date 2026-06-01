@@ -120,7 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Los_Angeles'
-USE_TZ = True
 
 USE_I18N = True
 
