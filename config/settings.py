@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-q90ks9tt33aea5c-o3u_4+lh+etzxt_3_%cz#!@dr3b9bb8#x3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -154,17 +154,15 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # Email Configuration for Password Reset
 # For development/testing - prints emails to console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# For production - uncomment and configure one of these options:
-# Option 1: Gmail
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your-app-password'  # Use App Password, not regular password
-# DEFAULT_FROM_EMAIL = 'Apex Picks <noreply@apexpicks.com>'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  # Use environment variable for email host user
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  # Use App Password, not regular password
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Apex Picks <apex.picks.app@gmail.com>')
 
 # Password reset token expiration (in seconds)
 PASSWORD_RESET_TIMEOUT = 259200  # 3 days
